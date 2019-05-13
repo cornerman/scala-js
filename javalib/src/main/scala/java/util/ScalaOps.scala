@@ -73,6 +73,9 @@ private[util] object ScalaOps {
     @inline def forall(f: A => Boolean): Boolean =
       __self.iterator().scalaOps.forall(f)
 
+    @inline def contains(elem: A): Boolean =
+      exists(_ == elem)
+
     @inline def indexWhere(f: A => Boolean): Int =
       __self.iterator().scalaOps.indexWhere(f)
 
@@ -103,7 +106,7 @@ private[util] object ScalaOps {
       extends AnyVal {
     def scalaOps: JavaIteratorOps[A] = new JavaIteratorOps[A](__self)
   }
-
+__self.iterator().scalaOps.exists(_ == elem)
   class JavaIteratorOps[A] private[ScalaOps] (val __self: Iterator[A])
       extends AnyVal {
 
@@ -127,6 +130,9 @@ private[util] object ScalaOps {
 
     @inline def forall(f: A => Boolean): Boolean =
       !exists(x => !f(x))
+
+    @inline def contains(elem: A): Boolean =
+      exists(_ == elem)
 
     @inline def indexWhere(f: A => Boolean): Int = {
       // scalastyle:off return
